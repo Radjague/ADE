@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADE</title>
+    <link rel="stylesheet" href="styles.css">  <!-- ربط ملف CSS --> 
+</head>
+<body>
+
+   <div id="mainPage">
+
+    <header>
+        <div class="logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2Ztk2ODm1Q28T0bf-E8BiZ74Ck_GfP2YTsA&s" alt="شعار شركة المياه الجزائرية">
+        </div>
+
+        <nav>
+            <ul class="menu">
+
+
+                <li class="dropdown">
+                    <a href="#"> عن الشركة  ▾</a>
+                    <ul class="submenu">
+                        <li><a href="#" onclick="showInfo('نبذة')" >نبذة عن الشركة</a></li>
+                        <li><a href="#" onclick="showInfo('الرؤية')"> الاستراتيجية</a></li>
+                    </ul>
+                </li>
+               
+                <li class="dropdown">
+                    <a href="#">  أسئلة شائعة  ▾</a>
+                    <ul class="submenu">
+                        <li><a href="#" onclick="showAnswer('q1')">تريد توصيل منزلك بشبكة مياه الشرب ADE, اليك ماعليك فعله!</a></li>
+                        <li><a href="#" onclick="showAnswer('q2')">هل المياه التي توزعها شركة ADE ذات نوعية جيدة؟</a></li>
+                        <li><a href="#" onclick="showAnswer('q3')">طرق الدفع؟</a></li>
+                    </ul>
+                </li>
+
+                <!-- الشكاوى -->
+            <li class="dropdown">
+               <a href="#" onclick="openComplaintSection()">شكوى</a>
+            </li>
+  
+               
+
+                <li class="dropdown">
+                    <a href="#" onclick="toggleContact()"> اتصل بنا </a>
+
+                </li>
+  
+                   
+
+            </ul>
+        </nav>
+    </header>
+
+    <!-- قسم الشكوى -->
+<main>
+    <div id="complaint-section" class="content" style="display:none">
+      <div class="contact-container">
+       
+  
+        <div class="contact-form">
+            <h3 style="text-align:center;"> نموذج الشكوى</h3>
+  
+          <form id="complaintForm">
+            <label for="fullName">الاسم واللقب:</label>
+            <input type="text" id="fullName" required>
+  
+            <label for="wilaya">الولاية:</label>
+            <select id="wilaya" required>
+              <option value="" disabled selected>اختر الولاية</option>
+              <option>أدرار</option><option>الشلف</option><!-- … أكمل باقي الـ58 ولاية -->
+            </select>
+  
+            <label for="subscriberNo">رقم المشترك:</label>
+            <input type="number" id="subscriberNo" required>
+  
+            <label for="phoneC">رقم الهاتف:</label>
+            <input type="tel" id="phoneC" required>
+  
+            <label for="emailC">البريد الإلكتروني:</label>
+            <input type="email" id="emailC" required>
+  
+            <label for="address">العنوان:</label>
+            <input type="text" id="address" required>
+  
+            <label for="complaintText">محتوى الشكوى:</label>
+            <textarea id="complaintText" required></textarea>
+  
+            <label for="imageLink">رابط صورة :</label>
+            <input type="url" id="imageLink">
+  
+
+            <!-- … داخل <form id="complaintForm">  … -->
+<button type="button" onclick="openMap()"> اضغط لتحديد موقعك</button>
+<span id="locationStatus" style="display:none;color:green;margin-right:8px"></span>
+
+<!-- حقول مخفية لإرسال الإحداثيات مع النموذج -->
+<input type="hidden" id="latitude"  name="latitude">
+<input type="hidden" id="longitude" name="longitude">
+
+
+            <button type="submit">إرسال الشكوى</button>
+          </form>
+  
+          <p id="complaintSuccess" class="hidden">✅ تم تسجيل الشكوى وسنتصل بك قريبًا.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+
+    
+    
+   <!-- الصورة -->
+   <div class="image-container" id="imageContainer">
+    <img src="https://www.ade.dz//storage/app/media/actualites.jpg" alt="خلفية" class="background-image" id="mainImage">
+</div>
+<div class="carousel-container">
+    <div class="carousel">
+        <div class="card" id="water-info">
+            <h3>💧 الماء في ولايتي</h3>
+            <p >تجدون جميع المعلومات المتعلقة بخدمة المياه في بلديتكم</p>
+        </div>
+        <div class="card" id="water-quality">
+            <h3>🏢 جودة المياه</h3>
+            <p>تعتبر مياه الحنفية أكثر المواد مراقبة، وهي تخضع لمتابعة صحية دائمة.</p>
+        </div>
+        <div class="card" id="contact-centers">
+            <h3>🎧 مراكز الاتصال الخاصة بنا</h3>
+            <p>أرقام هواتفنا متاحة عن طريق إدخال اسم بلديتكم</p>
+        </div>
+        <div class="card" id="agency-info">
+            <h3>🏢 وكالتكم</h3>
+            <p>تجدون جميع المعلومات المتعلقة بوكالتكم</p>
+
+             </div>
+        
+         
+              
+</div>
+    </div>
+    <!-- هذا القسم يمكن وضعه أسفل البطاقات أو في أي مكان مناسب -->
+<div id="content" style="display: none; margin-top: 20px; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+    <h2 id="content-title" style="margin-bottom: 10px;"></h2>
+    <p id="content-text" style="margin-bottom: 20px;"></p>
+    <!-- الخريطة ستُضاف هنا تلقائيًا من خلال JavaScript -->
+</div>
+
+</div>
+<!-- منطقة عرض المحتوى عند الضغط على أي بطاقة -->
+<div id ="content">
+    <h2 id="content-title">العنوان</h2>
+    <p id="content-text">وصف المحتوى</p>
+</div>
+
+
+
+
+<div id="info-box" class="content"></div>
+<div id="answer-box" class="content"></div>
+
+    <main>
+        <div id="info-box"></div>
+    </main>
+
+    <main>
+        <div id="answer-box"></div>
+    </main>
+
+    <main>
+        <div id="contact-section" class="content" >
+            <div class="contact-container">
+                <div class="map">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyjjZ75-hYhDa9T33fmGAux-ngpzHI_xb-Mg&s" alt="خريطة الموقع">
+                </div>
+                <div class="contact-form">
+                    <h3>📍 مقر: المنطقة الصناعية بوادى السمار</h3>
+                    <p>📞 الهاتف: +213 (0) 37 00 93 23 / +213 (0) 10 00 93 23</p>
+
+                    <form id="contactForm">
+                        <label for="name">الاسم:</label>
+                        <input type="text" id="name" required>
+
+                        <label for="email">الإيميل:</label>
+                        <input type="email" id="email" required>
+
+                        <label for="phone">الهاتف:</label>
+                        <input type="tel" id="phone" required>
+
+                        <label for="message">الرسالة:</label>
+                        <textarea id="message" required></textarea>
+
+                        <button type="submit">إرسال</button>
+                    </form>
+                    <p id="successMessage" class="hidden">✅ تم إرسال رسالتك بنجاح! سنقوم بالتواصل معك قريبًا.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+   
+<div class="buttons-container" id="registrationButtons">
+    <button class="modal-button" onclick="openWorkerModal()">تسجيل كعامل</button>
+    <button class="modal-button" onclick="openCitizenModal()">تسجيل كمواطن</button>
+</div>
+<!-- نافذة اختيار نوع التسجيل للمواطن -->
+<div id="citizenModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCitizenModal()">&times;</span>
+        <h2>اختر نوع التسجيل</h2>
+        <button class="modal-button" onclick="showCitizenLogin()">تسجيل الدخول </button>
+       
+       <p class="signup-link">
+            ليس لديك حساب؟ <a href="#" onclick="showCitizenSignup()">إنشاء حساب</a>
+        </p>
+    </div>
+</div><!-- نموذج تسجيل الدخول للمواطن -->
+<div id="citizenLogin" class="modal  ">
+    <div class="modal-content">
+        <span class="close" onclick="closeCitizenLogin()">&times;</span>
+        <h2>تسجيل دخول المواطن</h2>
+        <input type="email" id="citizenEmail" placeholder="البريد الإلكتروني">
+        <input type="password" id="citizenPassword" placeholder="كلمة المرور">
+        <button class="modal-button" onclick="submitCitizenLogin()">تسجيل </button>
+    </div>
+</div>
+<!-- نموذج إنشاء حساب المواطن -->
+<div id="citizenSignup" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAllModals()">&times;</span>
+        <h2>إنشاء حساب جديد</h2>
+        <input type="text" id="citizenName" placeholder="الاسم الكامل">
+        <input type="email" id="citizenSignupEmail" placeholder="البريد الإلكتروني">
+        <input type="password" id="citizenSignupPassword" placeholder="كلمة المرور">
+        <button class="modal-button" onclick="submitCitizenSignup()">إنشاء الحساب</button>
+    </div>
+</div>
+</div>
+<!-- صفحة الترحيب التي ستظهر بعد تسجيل الدخول -->
+<div id="welcomePage" class="welcome-container" style="display: none; text-align: center;">
+    
+    <!-- الشريط الأزرق في الأعلى مع اللوجو -->
+    <div style="background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; justify-content: center; width: 100%; gap: 10px;">
+
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2Ztk2ODm1Q28T0bf-E8BiZ74Ck_GfP2YTsA&s" alt="شعار" style="height: 70px ; border-radius: 50%;">
+        <!-- النصوص (عربي + فرنسي) بترتيب عمودي -->
+  <div style="display: flex; flex-direction: column; align-items: center;">
+        <span style="font-size: 30px; font-weight: bold ; letter-spacing: 5px">وزارة الري - الجزائرية للمياه</span>
+        <span style="font-size: 20px; letter-spacing: 5px; margin-top: 10px;">Ministère de l'Hydraulique<br>Algérienne Des Eaux</span>
+    </div>
+
+    </div>
+    
+
+    <h2>مرحبًا بك، <span id="userName"></span>!</h2>
+    <p>تم تسجيل الدخول بنجاح.</p>
+    <button onclick="logout()">تسجيل الخروج</button> <!-- زر تسجيل الخروج -->
+
+    <div class="button-container">
+        <div class="button-row">
+
+        <button class="btn blue-light" onclick="openPaymentModal()">
+            دفع فاتورتي
+          
+            <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQBl7qh8Yv3JjP56-dpV0AwGhemyK52AxTGVk5Ph9fjov4YNOUi" alt="دفع فاتورتي">
+            
+        </button>
+  
+
+<!-- نافذة الدفع -->
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePaymentModal()">&times;</span>
+        <h2>دفع الفاتورة</h2>
+        <div class="form-group">
+            <label for="subscriberCode">رمز الزبون (7 أرقام):</label>
+            <input type="text" id="subscriberCode" class="input-field" placeholder="  " maxlength="7">
+          </div>
+          
+          <div class="form-group">
+            <label for="invoiceNumber ">رقم الفاتورة:</label>
+            <input type="text" id="invoiceNumber" class="input-field" placeholder="  ">
+          </div>
+          
+          <div class="form-group">
+            <label for="trimester">الفترة الممتدة:</label>
+            <select id="trimester" class="input-field">
+              <option value="">اختر الفترة الممتدة</option>
+              <option value="T1">الفصل الأول (يناير - مارس)</option>
+              <option value="T2">الفصل الثاني (أبريل - يونيو)</option>
+              <option value="T3">الفصل الثالث (يوليو - سبتمبر)</option>
+              <option value="T4">الفصل الرابع (أكتوبر - ديسمبر)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="year">السنة:</label>
+            <input type="number" id="year" class="input-field" placeholder="" min="2000" max="2100">
+          </div>
+          
+          <div class="form-group">
+            <label for="amount">مبلغ الفاتورة بالدينار:</label>
+            <input type="number" id="amount" class="input-field" placeholder="  ">
+          </div>
+          
+          <div class="form-group">
+            <label for="paymentKey">رمز الدفع (25 رقم):</label>
+            <input type="text" id="paymentKey" class="input-field" placeholder="  " maxlength="25">
+
+          </div>
+          
+        <button class="modal-button" onclick="submitPayment()">دفع</button>
+    </div>
+</div>
+
+
+    <button class="btn blue-medium" onclick="openAgenciesModal()">
+        وكالات
+        <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTS_NPqBqTSSfEk3gs1fZezzk4B1PK0osoXbkz19kxAScgj4Yo0" alt="وكالات">
+    </button>
+    
+</div>
+
+    <!-- نافذة عرض الوكالات -->
+<div id="agenciesModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAgenciesModal()">&times;</span>
+        <h2>اختر الولاية</h2>
+        <select id="wilayaSelect" onchange="loadAgencies()">
+            <option value="">اختر الولاية</option>
+            <option value="ElOued">الوادي</option>
+            <option value="algiers">الجزائر</option>
+            <option value="oran">وهران</option>
+            <option value="constantine">قسنطينة</option>
+            <option value="annaba">عنابة</option>
+            <!-- أضف بقية الولايات هنا -->
+        </select>
+
+        <div id="agenciesList"></div>
+    </div>
+</div>
+
+    
+<div class="button-row">
+
+        <button class="btn blue-dark" onclick="openComplaintModal()">
+            شكوى
+            <img src="https://t3.ftcdn.net/jpg/00/91/34/64/360_F_91346405_So4pYj9reIAgXi0oiJUCTQsuL421d47v.jpg" alt="شكوى">
+        </button>
+        <!-- نافذة الشكوى -->
+<div id="complaintModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeComplaintModal()">×</span>
+  
+      <h3>إرسال شكوى</h3>
+  
+      <form id="internalComplaintForm">
+        <!-- رقم المشترك -->
+        <div class="form-group">
+          <label for="subscriberNumber">رقم المشترك</label>
+          <input type="text" id="subscriberNumber" />
+        </div>
+  
+        <!-- الولاية -->
+        <div class="form-group">
+          <label for="wilaya">الولاية</label>
+          <select id="wilaya">
+            <option value="" disabled selected>اختر الولاية</option>
+            <option value="أدرار">أدرار</option>
+            <option value="الشلف">الشلف</option>
+            <option value="الجلفة">الجلفة</option>
+            <option value="الوادي">الوادي</option>
+            <!-- أضف باقي الولايات حسب الحاجة -->
+          </select>
+        </div>
+  
+        <!-- العنوان -->
+        <div class="form-group">
+          <label for="address">العنوان</label>
+          <input type="text" id="address" />
+        </div>
+  
+        <!-- رابط الصورة -->
+        <div class="form-group">
+          <label for="imageInput">رابط الصورة</label>
+          <input type="url" id="imageInput" />
+        </div>
+  
+        <!-- محتوى الشكوى -->
+        <div class="form-group">
+          <label for="complaintText">محتوى الشكوى</label>
+          <textarea id="complaintText"></textarea>
+        </div>
+  
+        <!-- زر تحديد الموقع -->
+        <div class="form-group center">
+          <button type="button" class="btn2" onclick="openMap()">تحديد موقعي</button>
+          <p id="locationStatus" style="color: green; display: none; margin-top: 8px;">
+            تم تحديد الموقع بنجاح ✅
+          </p>
+        </div>
+  
+        <!-- الإحداثيات (مخفية) -->
+        <input type="hidden" id="latitude" />
+        <input type="hidden" id="longitude" />
+  
+        <!-- زر الإرسال -->
+        <div class="form-group center">
+          <button type="submit" class="btn2">إرسال الشكوى</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+
+         
+
+        <button class="btn blue-light" onclick="showModal('notificationsModal')">
+             تنبيهات
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-0KBs9-2T-S73i0Rhc_N1kYAyFuOGVEKFKg&s" alt=" تنبيهات">
+        </button>
+    </div>
+
+    <!-- نافذة التنبيهات -->
+  <div class="modal" id="notificationsModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('notificationsModal')">&times;</span>
+      <h2>هنا أجد تنبيهاتي</h2>
+    </div>
+  </div>
+  <div class="button-row">
+
+        <button class="btn blue-medium" onclick="showModal('debtsModal')">
+            ديون
+           <img src="https://png.pngtree.com/element_our/png_detail/20181208/calculator-icon-png_265232.jpg" alt=" ديون">
+       </button>
+
+    </div>
+</div>
+
+<!-- نافذة الديون -->
+<div class="modal" id="debtsModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('debtsModal')">&times;</span>
+      <h2>هنا أجد ديوني</h2>
+    </div>
+  </div>
+
+
+
+
+
+  
+
+</div>
+
+
+
+
+<!-- نموذج تسجيل دخول العامل -->
+<div id="workerModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeWorkerModal()">&times;</span>
+        <h2>تسجيل  العامل</h2>
+        <input type="email" id="workerEmail" placeholder="البريد الإلكتروني">
+        <input type="password" id="workerPassword" placeholder="كلمة المرور">
+        <button class="modal-button" onclick="submitWorkerForm()">تسجيل الدخول</button>
+        
+        <!-- زر تسجيل الدخول بواسطة Google -->
+        <div style="margin-top: 15px; text-align: center;">
+            <p>أو</p>
+            <button class="google-button" onclick="signInWithGoogle()">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAn7vpraIfVYz7YEeTgNlE--BaGqOO2SMLtinAaN25SOcODNm2Po9GCbN2-Y-6Rwm6GJM&usqp=CAU" alt="Google" style="width: 20px; margin-right: 10px;">
+                تسجيل الدخول بواسطة Google
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.google-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    color: #444;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.google-button:hover {
+    background-color: #f1f1f1;
+}
+</style>
+
+  
+      <script src="app.js"></script>
+      <!-- الشريط السفلي للموقع -->
+<footer style="background-color: #007BFF; color: #fff; text-align: center; padding: 20px 10px; margin-top: 40px; font-size: 20px;">
+ 
+    <p>&copy; 2025 - شركة المياه الجزائرية ADE</p>
+    <p>📍 المقر الرئيسي: المنطقة الصناعية - وادي السمار</p>
+    <p>📧 البريد الإلكتروني: 
+        <a href="mailto:contact@ade.dz" style="color: black;">contact@ade.dz</a>
+    </p>
+    <p>📞 الهاتف: +213 (0) 37 00 93 23</p>
+    <div style="margin-top: 10px;">
+        <a href="#" style="color: black; margin: 0 10px;">من نحن</a> |
+        <a href="#" style="color: black; margin: 0 10px;">سياسة الخصوصية</a> |
+        <a href="#" style="color: black; margin: 0 10px;">اتصل بنا</a>
+    </div>
+   
+</footer>
+
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBo6n3eTC1HFMFwrAxX-Vp48ollpkUruLo",
+    authDomain: "ade1-6e25b.firebaseapp.com",
+    projectId: "ade1-6e25b",
+    storageBucket: "ade1-6e25b.firebasestorage.app",
+    messagingSenderId: "786106634887",
+    appId: "1:786106634887:web:7cc780fb5007e200df1e22",
+    measurementId: "G-FY0Q3H378H"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+
+
+<!-- إضافة مكتبات Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+<!-- تهيئة Firebase -->
+<script>
+
+  // تهيئة Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // إنشاء مراجع للخدمات
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+</script>
+
+<!-- إضافة ملف Firebase الخاص بنا -->
+<script src="firebase-app.js"></script>
+
+
+</body>
+
+</html>
